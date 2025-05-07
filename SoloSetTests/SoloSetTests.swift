@@ -1,0 +1,16 @@
+//
+//  SoloSetTests.swift
+//  SoloSetTests
+//
+//  Created by Wombat on 5/6/25.
+//
+
+import Testing
+
+struct SoloSetTests {
+
+    @Test func example() async throws {
+        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    }
+
+}
