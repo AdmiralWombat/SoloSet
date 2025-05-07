@@ -8,10 +8,13 @@
 import SwiftUI
 
 @main
-struct SoloSetApp: App {
+struct SoloSetApp: App
+{
+    @StateObject var game = SetGameViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            SetGameView(viewModel: game)
         }
     }
 }

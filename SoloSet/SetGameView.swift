@@ -7,8 +7,10 @@
 
 import SwiftUI
 
-struct ContentView: View
+struct SetGameView: View
 {
+    @ObservedObject var viewModel: SetGameViewModel
+    
     var body: some View
     {
         VStack {
@@ -19,5 +21,5 @@ struct ContentView: View
 }
 
 #Preview {
-    ContentView()
+    SetGameView(viewModel: SetGameViewModel())
 }
