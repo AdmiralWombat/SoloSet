@@ -1,3 +1,11 @@
+//
+//  CardView.swift
+//  SoloSet
+//
+//  Created by Wombat on 5/7/25.
+//
+import SwiftUI
+
 struct CardView : View
 {
     let card: SetGame.Card
@@ -15,13 +23,13 @@ struct CardView : View
             Group
             {
                 base.foregroundColor(.white)
-                base.strokeBorder(lineWidth: 2)
+                base.strokeBorder(lineWidth: card.isSelected ? 6 : 2)
                 VStack
                 {
                     ForEach(0..<card.cardCount, id: \.self)
                     { _ in
                     
-                        CardContent
+                        CardContent.aspectRatio(2, contentMode: .fit )
                     }
                 }.padding(15)
             }
@@ -65,8 +73,8 @@ struct CardView : View
             }
             else if (card.cardShading == CardShading.striped)
             {
-                shape.fill(card.cardColor.swiftUIColor)
-               
+                //shape.fill(card.cardColor.swiftUIColor.opacity(0.5))
+                StripeView(color: card.cardColor.swiftUIColor, shape: shape)
             }
             
         }
@@ -74,6 +82,16 @@ struct CardView : View
     
 }
 
+struct CardView_Previews: PreviewProvider {
+    static var previews: some View {
+        VStack
+        {
+            CardView(SetGame.Card(cardColor: CardColor.red, cardShape: CardShape.squiggle, cardShading: CardShading.striped, cardCount: 1, id: "test1")).padding(5)
+            CardView(SetGame.Card(cardColor: CardColor.red, cardShape: CardShape.squiggle, cardShading: CardShading.striped, cardCount: 1, id: "test1")).padding(5)
+            CardView(SetGame.Card(cardColor: CardColor.red, cardShape: CardShape.squiggle, cardShading: CardShading.striped, cardCount: 3, id: "test1")).padding(5)
+        }
+    }
+}
 
 extension CardColor
 {
@@ -81,8 +99,8 @@ extension CardColor
         switch self {
         case .red:
             return .red
-        case .yellow:
-            return .yellow
+        case .green:
+            return .green
         case .blue:
             return .blue
         }

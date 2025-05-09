@@ -20,4 +20,30 @@ class SetGameViewModel : ObservableObject
     {
         return SetGame()
     }
+    
+    var cards: Array<SetGame.Card>
+    {
+        return model.boardCards
+    }
+    
+    var deckEmpty: Bool
+    {
+        return model.deck.isEmpty
+    }
+    
+    func newGame()
+    {
+        model.newGame()
+   
+    }
+    
+    func draw()
+    {
+        model.draw()
+    }
+    
+    func choose(_ card: SetGame.Card)
+    {
+        model.choose(card: card)
+    }
 }
