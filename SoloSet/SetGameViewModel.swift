@@ -9,11 +9,11 @@ import SwiftUI
 
 class SetGameViewModel : ObservableObject
 {
-    @Published private var model : SetGame
+    @Published private var setGameModel : SetGame
     
     init()
     {
-        self.model = SetGameViewModel.createSetGame()
+        self.setGameModel = SetGameViewModel.createSetGame()
     }
     
     static func createSetGame() -> SetGame
@@ -23,27 +23,46 @@ class SetGameViewModel : ObservableObject
     
     var cards: Array<SetGame.Card>
     {
-        return model.boardCards
+        return setGameModel.boardCards
+    }
+    
+    var deck: Array<SetGame.Card>
+    {
+        return setGameModel.deck
+    }
+    
+    var discardPile: Array<SetGame.Card>
+    {
+        return setGameModel.discardPile
     }
     
     var deckEmpty: Bool
     {
-        return model.deck.isEmpty
+        return setGameModel.deck.isEmpty
     }
     
     func newGame()
     {
-        model.newGame()
-   
+        setGameModel.newGame()
+    }
+    
+    func shuffle()
+    {
+        setGameModel.shuffle()
+    }
+    
+    func flipCards()
+    {
+        setGameModel.flipCards()
     }
     
     func draw()
     {
-        model.draw()
+        setGameModel.draw()
     }
     
     func choose(_ card: SetGame.Card)
     {
-        model.choose(card: card)
+        setGameModel.choose(card: card)
     }
 }

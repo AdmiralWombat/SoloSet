@@ -16,19 +16,22 @@ struct StripeView<T>: View where T: Shape {
     let shape: T
     
     var body: some View {
-        HStack(spacing: 0) {
-            ForEach(Array(0..<numberOfStrips), id: \.self)
-            {
-                number in
-                Color.white
-                color.frame(width: lineWidth)
-                if number == numberOfStrips - 1 {
+        GeometryReader { geometry in
+            HStack(spacing: 0) {
+                ForEach(Array(0..<numberOfStrips), id: \.self)
+                {
+                    number in
                     Color.white
+                    color.frame(width: lineWidth)
+                    if number == numberOfStrips - 1 {
+                        Color.white
+                    }
                 }
-            }
+                
+            }.mask(shape)
+                .overlay(shape.stroke(color, lineWidth: borderLineWidth))
             
-        }.mask(shape)
-        .overlay(shape.stroke(color, lineWidth: borderLineWidth))
+        }
         
     }
 }

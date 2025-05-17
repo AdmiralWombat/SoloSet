@@ -9,6 +9,7 @@ import SwiftUI
 struct CardView : View
 {
     let card: SetGame.Card
+    @State private var pulse = false
     
     init(_ card: SetGame.Card)
     {
@@ -17,26 +18,45 @@ struct CardView : View
     
     var body: some View
     {
-        ZStack()
+        TimelineView(.animation(minimumInterval: 1/5))
         {
-            let base = RoundedRectangle(cornerRadius: 12)
-            Group
+            timeline in
+            GeometryReader
             {
-                base.foregroundColor(.white)
-                base.strokeBorder(lineWidth: card.isSelected ? 6 : 2)
-                VStack
-                {
-                    ForEach(0..<card.cardCount, id: \.self)
-                    { _ in
-                    
-                        CardContent.aspectRatio(2, contentMode: .fit )
+                geometry in
+                ZStack {
+                    if card.isFaceUp
+                    {
+                        cardContents(for: geometry.size.height)
                     }
-                }.padding(15)
+                    else
+                    {
+                        Color.clear
+                    }
+                }.cardify(isFaceUp: card.isFaceUp, dashedBorder: card.exists == false)
+                   
+                    
             }
-            .opacity(1)
-            base.fill().opacity(0)
-            
         }
+    }
+    
+    private func cardContents(for totalHeight: CGFloat) -> some View
+    {
+        VStack(spacing: 5)
+        {
+            let verticalPadding: CGFloat = 15
+            let availableHeight = totalHeight - (2 * verticalPadding)
+            let shapeHeight = availableHeight / 3.0
+            
+            ForEach(0..<card.cardCount, id: \.self)
+            {
+                _ in
+                
+                CardContent
+                    .frame(height: shapeHeight)
+            }
+        }.padding(15)
+        
     }
     
     @ViewBuilder
@@ -56,7 +76,7 @@ struct CardView : View
         }
     }
     
-
+    
     
     @ViewBuilder
     func applyCardStyle(shape: some Shape) -> some View
@@ -73,22 +93,20 @@ struct CardView : View
             }
             else if (card.cardShading == CardShading.striped)
             {
-                //shape.fill(card.cardColor.swiftUIColor.opacity(0.5))
                 StripeView(color: card.cardColor.swiftUIColor, shape: shape)
             }
             
         }
     }
-    
 }
 
 struct CardView_Previews: PreviewProvider {
     static var previews: some View {
         VStack
         {
-            CardView(SetGame.Card(cardColor: CardColor.red, cardShape: CardShape.squiggle, cardShading: CardShading.striped, cardCount: 1, id: "test1")).padding(5)
-            CardView(SetGame.Card(cardColor: CardColor.red, cardShape: CardShape.squiggle, cardShading: CardShading.striped, cardCount: 1, id: "test1")).padding(5)
-            CardView(SetGame.Card(cardColor: CardColor.red, cardShape: CardShape.squiggle, cardShading: CardShading.striped, cardCount: 3, id: "test1")).padding(5)
+            CardView(SetGame.Card(isFaceUp: false, cardColor: CardColor.red, cardShape: CardShape.oval, cardShading: CardShading.striped, cardCount: 2,exists: true, id: "test1")).padding(5)
+            CardView(SetGame.Card(isFaceUp: true, cardColor: CardColor.red, cardShape: CardShape.oval, cardShading: CardShading.solid, cardCount: 3, exists: true, id: "test1")).padding(5)
+            CardView(SetGame.Card(cardColor: CardColor.red, cardShape: CardShape.oval, cardShading: CardShading.striped, cardCount: 1, exists: false, id: "test1")).padding(5).border(.black)
         }
     }
 }
